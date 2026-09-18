@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Broken Authentication / Session Management - Findings Report</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    background: linear-gradient(135deg, #0f2027 0%, #203a43 45%, #2c5364 100%);
+    color: #222;
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+  .header {
+    background: #ffffff;
+    border-radius: 12px 12px 0 0;
+    padding: 30px 36px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  }
+  .header h1 {
+    margin: 0 0 6px 0;
+    font-size: 24px;
+    color: #16222a;
+  }
+  .header .sub {
+    color: #607080;
+    font-size: 13px;
+  }
+  .badge-scope {
+    display: inline-block;
+    margin-top: 10px;
+    background: #eef6ff;
+    color: #1a6fb5;
+    border: 1px solid #bfe0ff;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .summary {
+    background: #16222a;
+    display: flex;
+    gap: 0;
+    padding: 0;
+  }
+  .card {
+    flex: 1;
+    text-align: center;
+    padding: 18px 10px;
+    border-right: 1px solid rgba(255,255,255,0.08);
+  }
+  .card:last-child { border-right: none; }
+  .card-value { font-size: 26px; font-weight: 700; }
+  .card-label {
+    color: #9fb3c8;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    background: #fff;
+    border-radius: 0 0 12px 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  }
+  th, td {
+    border-bottom: 1px solid #eef1f4;
+    padding: 12px 14px;
+    text-align: left;
+    font-size: 13px;
+    vertical-align: top;
+  }
+  th {
+    background: #f4f7fa;
+    color: #33404d;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  tr:hover { background: #fafcff; }
+  .vuln-name { font-weight: 600; color: #16222a; }
+  .mono { font-family: Consolas, monospace; font-size: 11px; color: #445; word-break: break-all; }
+  .center { text-align: center; }
+  .badge {
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+  }
+  .footer {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 12px;
+    color: #cfe3f2;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <h1>Broken Authentication / Session Management — Findings Report</h1>
+    <div class="sub">
+      Target: http://localhost:3000 &nbsp;•&nbsp;
+      Generated: 2026-09-18 09:43:24 &nbsp;•&nbsp;
+      Total unique findings: 5
+    </div>
+    <div class="badge-scope">🔒 Authorized lab testing only — OWASP Juice Shop</div>
+  </div>
+  <div class="summary">
+    
+        <div class="card">
+          <div class="card-value" style="color:#e74c3c">0</div>
+          <div class="card-label">High</div>
+        </div>
+        <div class="card">
+          <div class="card-value" style="color:#e67e22">2</div>
+          <div class="card-label">Medium</div>
+        </div>
+        <div class="card">
+          <div class="card-value" style="color:#f1c40f">0</div>
+          <div class="card-label">Low</div>
+        </div>
+        <div class="card">
+          <div class="card-value" style="color:#95a5a6">3</div>
+          <div class="card-label">Informational</div>
+        </div>
+  </div>
+  <table>
+    <tr>
+      <th>Vulnerability</th>
+      <th>Severity</th>
+      <th>Affected Endpoint</th>
+      <th>Evidence</th>
+      <th>CWE</th>
+      <th>Recommendation</th>
+    </tr>
+    
+        <tr>
+            <td class="vuln-name">Session ID in URL Rewrite</td>
+            <td><span class="badge" style="background:#e67e22">Medium</span></td>
+            <td class="mono">http://localhost:3000/socket.io/?EIO=4&transport=websocket&sid=fmUg0LfETmx25S-ZAAAC  (+2 more occurrence(s))</td>
+            <td class="mono">fmUg0LfETmx25S-ZAAAC</td>
+            <td class="center">598</td>
+            <td>For secure content, put session ID in a cookie. To be even more secure consider using a combination of cookie and URL rewrite.</td>
+        </tr>
+        <tr>
+            <td class="vuln-name">Information Disclosure - JWT in Browser localStorage</td>
+            <td><span class="badge" style="background:#e67e22">Medium</span></td>
+            <td class="mono">http://localhost:3000/#/search</td>
+            <td class="mono">(see description)</td>
+            <td class="center">922</td>
+            <td>Store tokens in an HttpOnly, Secure cookie instead of localStorage/sessionStorage so JavaScript (and XSS) cannot read it.</td>
+        </tr>
+        <tr>
+            <td class="vuln-name">Authentication Request Identified</td>
+            <td><span class="badge" style="background:#95a5a6">Informational</span></td>
+            <td class="mono">http://localhost:3000/api/Users/  (+1 more occurrence(s))</td>
+            <td class="mono">password</td>
+            <td class="center">-1</td>
+            <td>This is an informational alert rather than a vulnerability and so there is nothing to fix.</td>
+        </tr>
+        <tr>
+            <td class="vuln-name">Session Management Response Identified</td>
+            <td><span class="badge" style="background:#95a5a6">Informational</span></td>
+            <td class="mono">http://localhost:3000/rest/user/login</td>
+            <td class="mono">authentication.token</td>
+            <td class="center">-1</td>
+            <td>This is an informational alert rather than a vulnerability and so there is nothing to fix.</td>
+        </tr>
+        <tr>
+            <td class="vuln-name">Information Disclosure - Information in Browser sessionStorage</td>
+            <td><span class="badge" style="background:#95a5a6">Informational</span></td>
+            <td class="mono">http://localhost:3000/#/search</td>
+            <td class="mono">(see description)</td>
+            <td class="center">359</td>
+            <td>This is an informational alert and no action is necessary.</td>
+        </tr>
+  </table>
+  <div class="footer">
+    Generated by auth_session_scanner.py — Member 3, Broken Authentication / Session Management Detection Tool
+  </div>
+</div>
+</body>
+</html>
